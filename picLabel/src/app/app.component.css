@@ -1,0 +1,50 @@
+.header {
+  margin: 0 auto;
+  position: relative;
+  height: 150px;
+  background-image: url(/assets/header.png);
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+.headline {
+  display: inline-block;
+  color: white;
+  position: absolute;
+  min-width: 50px;
+  top: 46px;
+  left: 12.83%;
+  line-height: 100%;
+  margin-left: -19px !important;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+  z-index: 99;
+}
+
+.logo {
+  display: block;
+  left: 2.69%;
+  margin-left: -1px;
+  position: absolute;
+  top: 42px;
+  width: 65px;
+  height: 65px;
+  background-image: url(/assets/iCorp.png);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.content {
+  background: #000000;
+  background: transparent;
+  padding: 15px;
+  margin: 20px auto 0;
+  position: relative;
+  cursor: auto;
+  width: 900px;
+  z-index: auto !important;
+}

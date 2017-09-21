@@ -1,0 +1,20 @@
+
+<header class="header">
+  <div class="logo" data-left="2.69%" style="left: 241.403px;"></div>
+  <h1 class="headline" data-left="12.83%" style="left: 329.621px;">
+    <a href="#" style="color:white">{{ title }}</a>
+  </h1>
+
+  <div class="col-md-6 col-md-offset-3" style="text-align:right">
+    <div *ngIf="authService.isAuthenticated">
+      <span style="color:white">Hello, {{ authService.userProfile.username }}</span>
+      <button (click)="logoutClick()" class="btn btn-default btn-sm">
+        <span class="glyphicon glyphicon-log-out"></span>Log out
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

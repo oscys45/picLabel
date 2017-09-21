@@ -1,0 +1,109 @@
+
+<div>
+  <div id="divUploadImages">
+    <div class="modal fade" id="uploadImageModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <image-upload [extensions]="['jpeg','jpg']"
+                  (onFileUploadFinish)="imageUploaded($event)"
+                  (onRemove)="imageRemoved($event)">
+            </image-upload>
+            <button class="btn btn-primary" type="button" (click)="uploadImages()" data-dismiss="modal">Upload</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="divImages">
+    <div class="modal fade" id="selectedImageModal" >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4>{{ selectedFile.name }}</h4>
+          </div>
+          <div class="modal-body">
+            <table>
+              <tr>
+                <td>
+                  <div class="selectedImage" *ngIf="selectedFile">
+                    <a download>
+                    <img class="selectedImage"
+                         style="width:400px;"
+                         *ngIf="selectedFile"
+                         src="{{ selectedFile.src }}" />
+                    </a>
+                    <div class="btn-back" (click)="navigate(false)">
+                      &lt;
+                    </div>
+                    <div class="btn-forward" (click)="navigate(true)">
+                      &gt;
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="formContainer">
+                    <label for="name">Name</label>
+                    <input id="name" [(ngModel)]="selectedFile.name" />
+                    <br />
+                    <label for="title">Title</label>
+                    <input id="title" [(ngModel)]="selectedFile.exif.title" />
+                    <br />
+                    <label for="authors">Authors</label>
+                    <input id="authors" [(ngModel)]="selectedFile.exif.authors" />
+                    <br />
+                    <label for="rating">Rating</label>
+                    <rating id="rating" [(ngModel)]="selectedFile.exif.rating"
+                            [max]="5"
+                            [readonly]="false"
+                            [disabled]="false"
+                            [required]="true"
+                            [titles]="['one', 'two', 'three', 'four', 'five']">
+                    </rating>
+                    <br />
+                    <label for="dateTaken">Date taken</label>
+                    <my-date-picker id="dateTaken" [options]="myDatePickerOptions"
+                                    [(ngModel)]="selectedFile.exif.dateTaken"></my-date-picker>
+                    <br />
+                    <label for="dateAcquired">Date Acquired</label>
+                    <my-date-picker id="dateAcquired" [options]="myDatePickerOptions"
+                                    [(ngModel)]="selectedFile.exif.dateAcquired"></my-date-picker>
+                    <br />
+                    <label for="comments">Comments</label>
+                    <input id="comments" [(ngModel)]="selectedFile.exif.comments" />
+                    <br />
+                    <label for="subject">Subject</label>
+                    <input id="subject" [(ngModel)]="selectedFile.exif.subject" />
+                    <br />
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="downloadImage()">Download</button>
+            <button class="btn btn-primary" type="button" (click)="saveImage()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <button data-toggle="modal" data-target="#uploadImageModal" class="btn btn-default btn-sm">
+      <span class="glyphicon glyphicon-plus"></span>Add Images
+    </button>
+    <br />
+    <ul id="thumbnailsList">
+      <li *ngFor="let file of userFiles | async" >
+        <img src="{{ file.thumbSrc }}" class="tn"
+             data-toggle="modal"
+             data-target="#selectedImageModal"
+             (click)=setSelectedImage(file)
+             alt="{{ file.name }}" />
+      </li>
+    </ul>
+  </div>
+</div>
+
