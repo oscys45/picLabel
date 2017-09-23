@@ -30,7 +30,11 @@ router.post('/',
  */
 router.post('/register',
     (req, res) => {
-        Account.register(new Account({ username : req.body.username }),
+        Account.register(new Account({ username : req.body.username,
+                                       firstName: req.body.firstName,
+                                       lastName: req.body.lastName,
+                                        displayName: req.body.displayName,
+                                        email: req.body.email}),
             req.body.password,
             (err, account) => {
                 if (err) {
