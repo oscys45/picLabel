@@ -4,6 +4,7 @@ export class Exif {
   title: string;
   subject: string;
   rating: number;
+  tags: string;
   comments: string;
   authors: string;
   dateTaken: any;  // Product of proprietary date type used by date picker.
