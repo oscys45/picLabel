@@ -35,10 +35,10 @@
                          *ngIf="selectedFile"
                          src="{{ selectedFile.src }}" />
                     </a>
-                    <div class="btn-back" (click)="navigate(false)">
+                    <div class="btn-back" *ngIf="(this.userFileValues.indexOf(selectedFile) > 0)" (click)="navigate(false)">
                       &lt;
                     </div>
-                    <div class="btn-forward" (click)="navigate(true)">
+                    <div class="btn-forward" *ngIf="(this.userFileValues.indexOf(selectedFile)+1 < this.userFileValues.length)" (click)="navigate(true)">
                       &gt;
                     </div>
                   </div>
@@ -62,6 +62,9 @@
                             [required]="true"
                             [titles]="['one', 'two', 'three', 'four', 'five']">
                     </rating>
+                    <br />
+                    <label for="tags">Tags (comma delimited)</label>
+                    <input id="tags" [(ngModel)]="selectedFile.exif.tags" />
                     <br />
                     <label for="dateTaken">Date taken</label>
                     <my-date-picker id="dateTaken" [options]="myDatePickerOptions"

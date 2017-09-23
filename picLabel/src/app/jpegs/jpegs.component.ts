@@ -95,14 +95,16 @@ export class JpegsComponent {
     this.selectedFile.exif = piexif.load(image.src);
 
     let exifDict = piexif.load(image.src);
-
+console.log(exifDict);
     this.selectedFile.exif.title = exifDict["0th"][piexif.ImageIFD.ImageDescription];
     this.selectedFile.exif.authors = exifDict["0th"][piexif.ImageIFD.Artist];
     this.selectedFile.exif.rating = exifDict["0th"][piexif.ImageIFD.Rating];
     this.selectedFile.exif.dateTaken = DateFormatHelper.exifDateToPickerDate(exifDict["Exif"][piexif.ExifIFD.DateTimeOriginal]);
+    // DateTimeDigitized is NOT the same as Date acquired in Windows.  Unsure of the Exif offset for that or if piexif supports it.
     this.selectedFile.exif.dateAcquired = DateFormatHelper.exifDateToPickerDate(exifDict["Exif"][piexif.ExifIFD.DateTimeDigitized]);
     this.selectedFile.exif.comments = ConversionHelper.bin2String(exifDict["0th"][piexif.ImageIFD.XPComment]);
     this.selectedFile.exif.subject = ConversionHelper.bin2String(exifDict["0th"][piexif.ImageIFD.XPSubject]);
+    this.selectedFile.exif.tags = ConversionHelper.bin2String(exifDict["0th"][piexif.ImageIFD.XPKeywords]);
   }
 
   /**
@@ -115,16 +117,14 @@ export class JpegsComponent {
 
     // Set Exifs.
     exifDict["0th"][piexif.ImageIFD.ImageDescription] = this.selectedFile.exif.title;
+    exifDict["0th"][piexif.ImageIFD.XPTitle] = ConversionHelper.string2Bin(this.selectedFile.exif.title);
     exifDict["0th"][piexif.ImageIFD.Artist] = this.selectedFile.exif.authors;
-    // !!! Short type bombing.
-    //exifDict["0th"][piexif.ImageIFD.Rating] = this.selectedFile.exif.rating;
+    exifDict["0th"][piexif.ImageIFD.Rating] = this.selectedFile.exif.rating;
     exifDict["Exif"][piexif.ExifIFD.DateTimeOriginal] = DateFormatHelper.pickerDateToExifDate(this.selectedFile.exif.dateTaken);
-    // !!! Wrong;
     exifDict["Exif"][piexif.ExifIFD.DateTimeDigitized] = DateFormatHelper.pickerDateToExifDate(this.selectedFile.exif.dateAcquired);
-    // !!! blank;
     exifDict["0th"][piexif.ImageIFD.XPComment] = ConversionHelper.string2Bin(this.selectedFile.exif.comments);
-    // !!! wrong;
     exifDict["0th"][piexif.ImageIFD.XPSubject] = ConversionHelper.string2Bin(this.selectedFile.exif.subject);
+    exifDict["0th"][piexif.ImageIFD.XPKeywords] = ConversionHelper.string2Bin(this.selectedFile.exif.tags);
     // TODO:  Not implemented.
     exifDict["GPS"][piexif.GPSIFD.GPSVersionID] = [7, 7, 7, 7];
 
@@ -149,6 +149,14 @@ export class JpegsComponent {
   private navigate(forward: boolean) {
 
     let index = this.userFileValues.indexOf(this.selectedFile) + (forward ? 1 : -1);
+
+    if (index == 0) {
+      index = 1;
+    } else if ((index > 0) && (index <= 0) && forward) {
+      index = this.userFileValues.indexOf(this.selectedFile) + 1;
+    } else if ((index > 0) && (index <= 0) && !forward) {
+      index = this.userFileValues.indexOf(this.selectedFile) - 1;
+    }
 
     if (index >= 0 && index <  this.userFileValues.length) {
       this.setSelectedImage(this.userFileValues[index]);
