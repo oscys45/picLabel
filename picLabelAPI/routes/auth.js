@@ -2,26 +2,61 @@ let express = require('express');
 let router = express.Router();
 let passport = require('passport');
 let jwt = require('jsonwebtoken');
-let LocalStrategy = require('passport-local').Strategy;
+let JwtStrategy = require("passport-jwt").Strategy;
+let ExtractJwt = require("passport-jwt").ExtractJwt;
 
 let Account = require('../models/account');
 
 // Configure passport
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
+let jwtOptions = {}
+
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+jwtOptions.secretOrKey = 'myJwtSecret';
+
+passport.use(new JwtStrategy(jwtOptions, (jwt_payload, next) => {
+
+    let user = Account.find({ username: jwt_payload.username });
+
+    if (user) {
+        next(null, user);
+    } else {
+        next(null, false);
+    }
+}));
 
 /**
  * Authenticate user, return a token.
  */
 router.post('/',
-    passport.authenticate('local'),
+
     (req, res) => {
-        let token = jwt.sign({user: req.user}, 'myJwtSecret', { expiresIn: "2 days" });
-        res.json({
-            success: true,
-            message: 'Authentication successful',
-            token: token
+        let username = "";
+
+        if (req.body.username && req.body.password) {
+            username = req.body.username;
+        } else {
+            res.status(401).json({ success: false, message: "Missing username or password" });
+        }
+
+        Account.findOne({ username: username }, (err, account) => {
+            if (!account) {
+                res.status(401).json({ success: false, message: "User not found" });
+            }
+
+            account.comparePassword(req.body.password, (err, isMatch) => {
+                if (isMatch && !err) {
+                    // Create token if the password matched and no error was thrown
+                    let token = jwt.sign({ user: account }, jwtOptions.secretOrKey, { expiresIn: "2 days" });
+
+                    res.status(200).json({
+                        success: true,
+                        message: 'Authentication successful',
+                        token: token
+                    });
+                } else {
+                    res.status(401).json({ success: false, message: err });
+                }
+            });
         });
     });
 
@@ -30,25 +65,24 @@ router.post('/',
  */
 router.post('/register',
     (req, res) => {
-        Account.register(new Account({ username : req.body.username,
-                                       firstName: req.body.firstName,
-                                       lastName: req.body.lastName,
-                                        displayName: req.body.displayName,
-                                        email: req.body.email}),
-            req.body.password,
-            (err, account) => {
-                if (err) {
-                    return res.render('register', { user: account });
-                }
+        let newUser = new Account({ username : req.body.username,
+                                    password: req.body.password,
+                                    firstName: req.body.firstName,
+                                    lastName: req.body.lastName,
+                                    displayName: req.body.displayName,
+                                    email: req.body.email});
+        newUser.save((err, account) => {
+            if (err) {
+                return res.json({ success: false, message: err});
+            }
 
-                passport.authenticate('local')
-                let token = jwt.sign({user: account}, 'myJwtSecret', { expiresIn: "2 days" });
-                res.json({
-                    success: true,
-                    message: 'Registration/authentication successful',
-                    token
-                });
+            let token = jwt.sign({user: account}, jwtOptions.secretOrKey, { expiresIn: "2 days" });
+            res.json({
+                success: true,
+                message: 'Registration/authentication successful',
+                token
             });
+        });
     });
 
 module.exports = router;
