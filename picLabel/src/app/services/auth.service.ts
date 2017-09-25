@@ -73,4 +73,12 @@ export class AuthService {
 
     return <User>tokenHelper.decodeToken(localStorage.getItem('token')).user;
   }
+
+  /**
+   * Return raw local storage token.
+   * @returns {User}
+   */
+  public get userToken(): string {
+    return localStorage.getItem('token');
+  }
 }
