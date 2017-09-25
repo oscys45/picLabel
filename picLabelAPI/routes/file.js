@@ -1,4 +1,5 @@
 let express = require('express');
+let passport = require('passport');
 let sharp = require('sharp');
 let router = express.Router();
 let File = require('../models/file');
@@ -6,7 +7,7 @@ let File = require('../models/file');
 /**
  * Get all files for user.
  */
-router.get('/users/:userId', (req, res, next) => {
+router.get('/users/:userId', passport.authenticate('jwt', { session: false }), (req, res, next) => {
 
     let query = { accountId: req.params.userId };
 
@@ -18,7 +19,7 @@ router.get('/users/:userId', (req, res, next) => {
 /**
  * Get single file.
  */
-router.get('/:fileId', (req, res, next) => {
+router.get('/:fileId', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     res.send(req.params.fileId);
 });
 
@@ -26,6 +27,7 @@ router.get('/:fileId', (req, res, next) => {
  * Insert a single file.
  */
 router.post('/',
+    passport.authenticate('jwt', { session: false }),
     (req, res) => {
         let file = new File( req.body );
         let srcBuffer = new Buffer(file.src.replace(/^data:image\/jpeg;base64,/, ""), 'base64');
@@ -53,6 +55,7 @@ router.post('/',
  * Update file.  All we ever update is src because that's what contains the Exifs.
  */
 router.put('/:fileId',
+    passport.authenticate('jwt', { session: false }),
     (req, res) => {
         let query = { _id: req.params.fileId };
 
