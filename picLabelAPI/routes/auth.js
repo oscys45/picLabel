@@ -8,20 +8,20 @@ let ExtractJwt = require("passport-jwt").ExtractJwt;
 let Account = require('../models/account');
 
 // Configure passport
-let jwtOptions = {}
+let jwtOptions = {};
 
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('jwt');
 jwtOptions.secretOrKey = 'myJwtSecret';
 
-passport.use(new JwtStrategy(jwtOptions, (jwt_payload, next) => {
+passport.use(new JwtStrategy(jwtOptions, (payload, next) => {
 
-    let user = Account.find({ username: jwt_payload.username });
-
-    if (user) {
-        next(null, user);
-    } else {
-        next(null, false);
-    }
+    Account.findOne({ username: payload.user.username }, (err, account) => {
+        if (account) {
+            next(null, account);
+        } else {
+            next(null, false);
+        }
+    });
 }));
 
 /**
@@ -76,7 +76,7 @@ router.post('/register',
                 return res.json({ success: false, message: err});
             }
 
-            let token = jwt.sign({user: account}, jwtOptions.secretOrKey, { expiresIn: "2 days" });
+            let token = jwt.sign({ user: account }, jwtOptions.secretOrKey, { expiresIn: "2 days" });
             res.json({
                 success: true,
                 message: 'Registration/authentication successful',

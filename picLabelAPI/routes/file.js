@@ -7,13 +7,14 @@ let File = require('../models/file');
 /**
  * Get all files for user.
  */
-router.get('/users/:userId', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.get('/users/:userId',
+    passport.authenticate('jwt', { session: false }),
+    (req, res, next) => {
+        let query = { accountId: req.params.userId };
 
-    let query = { accountId: req.params.userId };
-
-    File.find(query, (err, files) => {
-        res.json(files);
-    });
+        File.find(query, (err, files) => {
+            res.json(files);
+        });
 });
 
 /**
