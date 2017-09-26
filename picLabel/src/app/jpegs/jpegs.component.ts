@@ -95,7 +95,9 @@ export class JpegsComponent {
     this.selectedFile.exif = piexif.load(image.src);
 
     let exifDict = piexif.load(image.src);
-console.log(exifDict);
+
+    console.log(exifDict);
+
     this.selectedFile.exif.title = exifDict["0th"][piexif.ImageIFD.ImageDescription];
     this.selectedFile.exif.authors = exifDict["0th"][piexif.ImageIFD.Artist];
     this.selectedFile.exif.rating = exifDict["0th"][piexif.ImageIFD.Rating];
@@ -138,8 +140,8 @@ console.log(exifDict);
   /**
    * Download file to client.
    */
-  private downloadImage(): void {
-    blobUtil.base64StringToBlob(this.selectedFile.src.replace("data:image/jpeg;base64,", "")).then((blob) => { FileSaver.saveAs(blob, this.selectedFile.name); });
+  private downloadImage(file): void {
+    blobUtil.base64StringToBlob(this.selectedFile.src.replace("data:image/jpeg;base64,", "")).then((blob) => { FileSaver.saveAs(blob, file.name); });
   }
 
   /**

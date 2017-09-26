@@ -86,8 +86,12 @@
             </table>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary" (click)="downloadImage()">Download</button>
-            <button class="btn btn-primary" type="button" (click)="saveImage()">Save</button>
+            <button (click)="downloadImage(selectedFile)" class="btn btn-default btn-sm">
+              <span class="glyphicon glyphicon-download-alt"></span>
+            </button>
+            <button class="btn btn-default btn-sm" (click)="saveImage()">
+              <span class="glyphicon glyphicon-floppy-save"></span>
+            </button>
           </div>
         </div>
       </div>
@@ -98,13 +102,21 @@
       <span class="glyphicon glyphicon-plus"></span>Add Images
     </button>
     <br />
+
     <ul id="thumbnailsList">
-      <li *ngFor="let file of userFiles | async" >
-        <img src="{{ file.thumbSrc }}" class="tn"
-             data-toggle="modal"
-             data-target="#selectedImageModal"
-             (click)=setSelectedImage(file)
-             alt="{{ file.name }}" />
+      <li *ngFor="let file of userFiles | async">
+
+        <div class="image_container">
+          <img src="{{ file.thumbSrc }}" class="tn"
+               data-toggle="modal"
+               data-target="#selectedImageModal"
+               (click)=setSelectedImage(file)
+               alt="{{ file.name }}" />
+          <button (click)="setSelectedImage(file);downloadImage(file);" class="inlayButton btn btn-xs">
+            <span class="glyphicon glyphicon-download-alt"></span>
+          </button>
+        </div>
+
       </li>
     </ul>
   </div>
