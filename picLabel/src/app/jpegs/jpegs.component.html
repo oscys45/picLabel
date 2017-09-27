@@ -101,20 +101,31 @@
     <button data-toggle="modal" data-target="#uploadImageModal" class="btn btn-default btn-sm">
       <span class="glyphicon glyphicon-plus"></span>Add Images
     </button>
+    <button class="btn btn-default btn-sm"  (click)="downloadSelectedImages()">
+      <span class="glyphicon glyphicon-download-alt"></span>Download Selected
+    </button>
+
     <br />
 
     <ul id="thumbnailsList">
       <li *ngFor="let file of userFiles | async">
-
-        <div class="image_container">
+        <div class="image_container"
+             (mouseenter)="checkboxMap.get(file._id).display = true"
+             (mouseleave)="checkboxMap.get(file._id).display = false">
           <img src="{{ file.thumbSrc }}" class="tn"
                data-toggle="modal"
                data-target="#selectedImageModal"
                (click)=setSelectedImage(file)
                alt="{{ file.name }}" />
-          <button (click)="setSelectedImage(file);downloadImage(file);" class="inlayButton btn btn-xs">
+          <button *ngIf="checkboxMap.get(file._id).display" (click)="setSelectedImage(file);downloadImage(file);" class="inlayButton btn btn-xs">
             <span class="glyphicon glyphicon-download-alt"></span>
           </button>
+          <input type="checkbox"
+                 class="inlayCheck"
+                 *ngIf="checkboxMap.get(file._id).display || checkboxMap.get(file._id).selected"
+                 [checked]="checkboxMap.get(file._id).selected"
+                 (change)="checkboxMap.get(file._id).selected = !checkboxMap.get(file._id).selected"
+                 />
         </div>
 
       </li>
