@@ -65,6 +65,12 @@ p {
   right:0px;
 }
 
+.inlayCheck {
+  position:absolute;
+  top:0px;
+  right:0px;
+}
+
 .image_container {
   position: relative;
   display: inline-block;

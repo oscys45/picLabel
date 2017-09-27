@@ -10,6 +10,7 @@ import { AuthService } from '../services/auth.service';
 import { Jpeg } from '../models/jpeg';
 
 import { IMyDpOptions } from 'mydatepicker';
+import * as JSZip from 'jszip';
 import * as piexif from 'piexifjs';
 import * as FileSaver from 'file-saver';
 import * as blobUtil from 'blob-util';
@@ -28,6 +29,7 @@ export class JpegsComponent {
   private userFileValues: Array<Jpeg> = [];
   private filesToUpload: Array<Jpeg> = [];
   private selectedFile: Jpeg = new Jpeg();
+  private checkboxMap: Map<string, any> = new Map<string, any>();
 
   /**
    * Options for date picker control.
@@ -44,7 +46,6 @@ export class JpegsComponent {
    */
   constructor(private authService: AuthService,
               private fileService: FileService) {
-
     this.populateFiles();
   }
 
@@ -145,6 +146,38 @@ export class JpegsComponent {
   }
 
   /**
+   * Download selected files to client as a ZIP.
+   */
+  private downloadSelectedImages(): void {
+
+    let zip = new JSZip();
+    let zipPromiseArray = new Array<Promise<any>>();
+
+    // Traverse each file.
+    this.userFileValues.forEach((x) => {
+      // Is it selected?
+      if (this.checkboxMap.get(x._id).selected) {
+        // Convert it to BLOB (and add to promise array).
+        zipPromiseArray.push(blobUtil.base64StringToBlob(x.src.replace("data:image/jpeg;base64,", ""))
+          .then((blob) => {
+            // Add to zip
+            zip.file(x.name, blob);
+          })
+        );
+        this.checkboxMap.set(x._id, {selected : false});
+      }
+    });
+
+    // All files added?  Send that zip.
+    Promise.all(zipPromiseArray).then(() => {
+        zip.generateAsync({type: "blob"})
+          .then((zipBlob) => {
+            FileSaver.saveAs(zipBlob, "multis.zip");
+          });
+      });
+  }
+
+  /**
    * Navigate through pictures in the gallery in the modal.
    * @param {boolean} forward
    */
@@ -176,8 +209,12 @@ export class JpegsComponent {
 
     //fileGetOperation.subscribe((result: Jpeg[]) => {
     this.userFiles.subscribe((result: Jpeg[]) => {
-        //this.userFiles = result;
         this.userFileValues = result;
+
+        // Set the checkbox map.
+        result.forEach((x) => {
+          this.checkboxMap.set(x._id, { display: false, selected: false })
+        });
       },
       (err) => {
         this.userFiles = err.message;
