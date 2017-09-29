@@ -19,8 +19,8 @@ export class FileService {
               private http: HttpClient) {
   }
 
-  /** Insert single file to database.
-   *
+  /**
+   * Insert single file to database.
    * @param {Jpeg} file
    * @returns {Observable<T>}
    */

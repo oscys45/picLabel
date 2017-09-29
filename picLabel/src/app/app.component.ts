@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +10,14 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
 
-  private title: string  = 'EXIF Editor';
+  private title: string  = 'Irma Annotator';
 
   /**
    * Constructor
    * @param {AuthService} authService
    */
-  constructor(private authService: AuthService) {  }
+  constructor(private authService: AuthService,
+              private router: Router) {  }
 
   /**
    * Event handler for logout button.

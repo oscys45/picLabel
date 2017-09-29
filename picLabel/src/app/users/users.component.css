@@ -1,0 +1,84 @@
+ul { padding: 0;
+     width: 780px;
+     margin: 20px auto}
+
+
+li {
+  display: inline;
+}
+
+.tn{
+  margin: 2px 0px;
+  box-shadow: #999 1px 1px 3px 1px;
+  cursor: pointer
+}
+
+.modal-content {
+  width: 770px !important;
+}
+
+.selectedImage {
+  /*width:400px;
+  position:relative
+  */
+    display: block;
+    max-width:400px;
+    max-height:450px;
+    width: auto;
+    height: auto;
+
+}
+
+p {
+  -webkit-margin-before: 5px !important;
+  -webkit-margin-after: 5px !important;
+}
+
+.btn-back, .btn-forward{
+  position:absolute;
+  opacity:0.9;
+  background-color:black;
+  padding:10px;
+  top:190px;
+  color:white;
+  text-weight:bold;
+  cursor:pointer;
+}
+
+.btn-forward{
+  left:370px;
+}
+
+.formContainer {
+  padding-left: 20px;
+  width: 340px;
+  clear: both;
+}
+.formContainer input {
+  width: 100%;
+  clear: both;
+}
+
+.inlayButton {
+  position:absolute;
+  bottom:0px;
+  right:0px;
+}
+
+.inlayCheck {
+  position:absolute;
+  top:0px;
+  right:0px;
+}
+
+.image_container {
+  position: relative;
+  display: inline-block;
+}
+
+.image_container:before {
+  content: ' ';
+  display: block;
+  /* adjust 'height' to position overlay content vertically */
+  height: 50%;
+}
