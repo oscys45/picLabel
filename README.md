@@ -54,4 +54,4 @@ Functionality:
 - Add Facebook integration to post images directly to social media.
 
 Defects:
-- Hash password in user maintenance.
+- Hash password in user maintenance. 
