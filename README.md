@@ -38,3 +38,20 @@ This operation calls the user creation API directly, and you should receive a re
 ------
 
 To use the application, point your browser to http://localhost:4200
+
+------
+
+TODO:
+
+Housekeeping:
+- Class naming is a bit schizophrenic.  Fix that.
+- Clean up UI.
+
+Functionality:
+- Add GPS tags, integrate with Google Maps for user to pin a location on a map for lat/lon tag.
+- Add infinite scroll for thumbnail images in gallery.
+- Within the gallery, enable search (especially by tags).
+- Add Facebook integration to post images directly to social media.
+
+Defects:
+- Hash password in user maintenance. 
