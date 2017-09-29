@@ -15,14 +15,16 @@ router.get('/users/:userId',
         File.find(query, (err, files) => {
             res.json(files);
         });
-});
+    });
 
 /**
  * Get single file.
  */
-router.get('/:fileId', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-    res.send(req.params.fileId);
-});
+router.get('/:fileId',
+    passport.authenticate('jwt', { session: false }),
+    (req, res, next) => {
+        res.send(req.params.fileId);
+    });
 
 /**
  * Insert a single file.
@@ -53,21 +55,23 @@ router.post('/',
     });
 
 /**
- * Update file.  All we ever update is src because that's what contains the Exifs.
+ * Update file.  All we ever update is src because that's what contains the Exifs.  Name, too.
  */
 router.put('/:fileId',
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
         let query = { _id: req.params.fileId };
 
-        File.update(query, { src: req.body.src }, { }, (err, doc) => {
-            res.json({
-                success: true,
-                message: 'File save successful'
-            });
-});
-
-
+        File.update(query,
+                    { src: req.body.src,
+                      name: req.body.name },
+                    { },
+                    (err, doc) => {
+                    res.json({
+                        success: true,
+                        message: 'File save successful'
+                    });
+        });
 });
 
 module.exports = router;

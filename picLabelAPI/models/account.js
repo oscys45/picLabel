@@ -9,7 +9,8 @@ let Account = new Schema({
     firstName: String,
     lastName: String,
     displayName: String,
-    email: String
+    email: String,
+    roles: [String]
 });
 
 // pre-Save, hash password.

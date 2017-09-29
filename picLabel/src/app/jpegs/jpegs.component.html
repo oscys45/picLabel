@@ -98,10 +98,22 @@
     </div>
 
 
-    <button data-toggle="modal" data-target="#uploadImageModal" class="btn btn-default btn-sm">
-      <span class="glyphicon glyphicon-plus"></span>Add Images
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary"><input type="checkbox" style="margin: 0"></button>
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" style="width:20px;">
+        <li><a (click)="selectAll(true)">All</a></li>
+        <li><a (click)="selectAll(false)">None</a></li>
+      </ul>
+    </div>
+
+    <button data-toggle="modal" data-target="#uploadImageModal" class="btn btn-primary">
+      <span class="glyphicon glyphicon-plus"></span>
     </button>
-    <button class="btn btn-default btn-sm"  (click)="downloadSelectedImages()">
+
+    <button class="btn btn-default btn-sm" *ngIf="hasSelectedFiles" (click)="downloadSelectedImages()">
       <span class="glyphicon glyphicon-download-alt"></span>Download Selected
     </button>
 

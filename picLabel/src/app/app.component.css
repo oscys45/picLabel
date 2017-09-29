@@ -49,3 +49,32 @@
   z-index: auto !important;
 }
 
+nav {
+  float: left;
+  max-width: 160px;
+  margin: 0;
+  padding: 1em;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul a {
+  text-decoration: none;
+}
+
+.footer {
+  padding: 1em;
+  color: white;
+  background-image: url(/assets/header.png);
+  background-position: center top;
+  background-repeat: no-repeat;
+  clear: left;
+  margin: 0 auto;
+  position: relative;
+  height: 150px;
+  text-align: center;
+}
+

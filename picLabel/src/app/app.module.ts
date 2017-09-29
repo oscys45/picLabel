@@ -13,17 +13,21 @@ import { AuthService } from "./services/auth.service";
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { JpegsComponent } from './jpegs/jpegs.component';
+import { UsersComponent } from './users/users.component';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'jpegs', component: JpegsComponent, canActivate: [ AuthGuardService ] }];
+  { path: 'jpegs', component: JpegsComponent, canActivate: [ AuthGuardService ] },
+  { path: 'users', component: UsersComponent, canActivate: [ AuthGuardService ] }
+  ];
 
 @NgModule({
   declarations: [
     AppComponent,
     JpegsComponent,
-    LoginComponent
+    LoginComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

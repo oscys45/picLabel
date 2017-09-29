@@ -7,14 +7,39 @@
 
   <div class="col-md-6 col-md-offset-3" style="text-align:right">
     <div *ngIf="authService.isAuthenticated">
-      <span style="color:white">Hello, {{ authService.userProfile.displayName }}</span>
-      <button (click)="logoutClick()" class="btn btn-default btn-sm">
-        <span class="glyphicon glyphicon-log-out"></span>
-      </button>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary">{{ authService.userProfile.displayName }}</button>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" style="width:20px;">
+          <li><a>Edit Profile</a></li>
+          <li><a (click)="logoutClick()">Log off</a></li>
+        </ul>
+      </div>
+
+
     </div>
   </div>
 </header>
 
-<div class="content">
-  <router-outlet></router-outlet>
-</div>
+<nav *ngIf="authService.isAuthenticated">
+  <ul>
+    <li>
+      <div *ngIf="authService.isAdministrator">
+        <button type="button" class="btn btn-primary" (click)="this.router.navigate([ 'users' ]);">User Edit</button>
+      </div>
+    </li>
+    <li><button type="button" class="btn btn-primary" (click)="this.router.navigate([ 'jpegs' ]);">JPEGs</button></li>
+  </ul>
+</nav>
+
+<article>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</article>
+
+<footer class="footer">
+  <span>Irma Annotator is licensed under MIT.  Clone it at <a href="https://github.com/oscys45/picLabel/">GitHub</a></span>
+</footer>

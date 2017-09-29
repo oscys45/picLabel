@@ -64,6 +64,18 @@ export class AuthService {
   }
 
   /**
+   * Returns true if user is authenticated (an unexpired token exists).
+   * @returns {boolean}
+   */
+  public get isAdministrator(): boolean {
+
+    if (!this.userProfile) {
+      return false;
+    }
+    return this.userProfile.roles.find((x) =>  x == "Administrator") ? true : false;
+  }
+
+  /**
    * Decode local storage token and return the user.
    * @returns {User}
    */
@@ -81,4 +93,5 @@ export class AuthService {
   public get userToken(): string {
     return localStorage.getItem('token');
   }
+
 }

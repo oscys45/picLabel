@@ -26,6 +26,7 @@ passport.use(new JwtStrategy(jwtOptions, (payload, next) => {
 
 /**
  * Authenticate user, return a token.
+ * TODO:  Add last login date.
  */
 router.post('/',
 
@@ -70,7 +71,8 @@ router.post('/register',
                                     firstName: req.body.firstName,
                                     lastName: req.body.lastName,
                                     displayName: req.body.displayName,
-                                    email: req.body.email});
+                                    email: req.body.email,
+                                    roles: req.body.roles});
         newUser.save((err, account) => {
             if (err) {
                 return res.json({ success: false, message: err});

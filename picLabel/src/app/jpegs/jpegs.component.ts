@@ -90,7 +90,7 @@ export class JpegsComponent {
    * User selected image in the gallery, set the class variable selectedFile to that image.
    * @param image
    */
-  private setSelectedImage(image): void {
+  private setSelectedImage(image: Jpeg): void {
 
     this.selectedFile = image;
     this.selectedFile.exif = piexif.load(image.src);
@@ -134,14 +134,15 @@ export class JpegsComponent {
     let exifStr = piexif.dump(exifDict);
 
     this.selectedFile.src = piexif.insert(exifStr, this.selectedFile.src);
+    this.selectedFile.name = (this.selectedFile.name.includes(".jpg") ? this.selectedFile.name : this.selectedFile.name + ".jpg");
 
-    this.fileService.updateFile((this.selectedFile));
+    this.fileService.updateFile(this.selectedFile);
   }
 
   /**
    * Download file to client.
    */
-  private downloadImage(file): void {
+  private downloadImage(file: Jpeg): void {
     blobUtil.base64StringToBlob(this.selectedFile.src.replace("data:image/jpeg;base64,", "")).then((blob) => { FileSaver.saveAs(blob, file.name); });
   }
 
@@ -178,10 +179,38 @@ export class JpegsComponent {
   }
 
   /**
+   * Select or deselect all images in checkboxMap.
+   * @param {boolean} select
+   */
+  private selectAll(select: boolean): void {
+    this.checkboxMap.forEach((val, key, map) => {
+      val.selected = select;
+    });
+  }
+
+  /**
+   * Return true if any image is selected.
+   * Sucks because it's a linear search.
+   * @returns {boolean}
+   */
+  private get hasSelectedFiles(): boolean {
+
+    let result: boolean = false;
+
+    this.checkboxMap.forEach((val, key, map) => {
+      if (val.selected) {
+        result = true;
+      }
+    });
+
+    return result;
+  }
+
+  /**
    * Navigate through pictures in the gallery in the modal.
    * @param {boolean} forward
    */
-  private navigate(forward: boolean) {
+  private navigate(forward: boolean): void {
 
     let index = this.userFileValues.indexOf(this.selectedFile) + (forward ? 1 : -1);
 

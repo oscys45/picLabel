@@ -1,0 +1,83 @@
+
+<div>
+
+  <div id="divUsers">
+    <div class="modal fade" id="selectedUserModal" >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4>{{ selectedUser.name }}</h4>
+          </div>
+          <div class="modal-body">
+            <div class="formContainer">
+              <label for="userName">User Name</label>
+              <input id="userName" [(ngModel)]="selectedUser.username" required />
+              <br />
+              <label for="password">Password</label>
+              <input id="password" [(ngModel)]="selectedUser.password" required />
+              <br />
+              <label for="firstName">First Name</label>
+              <input id="firstName" [(ngModel)]="selectedUser.firstName" />
+              <br />
+              <label for="lastName">Last Name</label>
+              <input id="lastName" [(ngModel)]="selectedUser.lastName" />
+              <br />
+              <label for="displayName">Display Name</label>
+              <input id="displayName" [(ngModel)]="selectedUser.displayName" />
+              <br />
+              <label for="email">email</label>
+              <input id="email" [(ngModel)]="selectedUser.email" />
+              <br />
+              <label for="roles">Roles</label>
+              <select multiple id="roles" [(ngModel)]="selectedUser.roles" required>
+                <option value="Administrator">Administrator</option>
+                <option value="User">User</option>
+                <option value="Guest">Guest</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default btn-sm" data-dismiss="modal" (click)="saveUser()">
+              <span class="glyphicon glyphicon-floppy-save"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <button data-toggle="modal" data-target="#selectedUserModal" class="btn btn-primary" (click)="setSelectedUser(null)">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+
+    <br />
+
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Display Name</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+      </tr>
+      </thead>
+      <tr *ngFor="let user of users | async">
+        <td>
+          <span data-toggle="modal"
+                data-target="#selectedUserModal"
+                (click)=setSelectedUser(user)>
+            {{ user.displayName }}
+          </span>
+        </td>
+        <td>
+          <span>{{ user.firstName }}</span>
+        </td>
+        <td>
+          <span>{{ user.lastName }}</span>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+

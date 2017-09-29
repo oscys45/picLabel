@@ -7,7 +7,7 @@ let passport = require('passport');
 let mongoose = require('mongoose');
 
 let index = require('./routes/index');
-let users = require('./routes/users');
+let user = require('./routes/user');
 let auth = require('./routes/auth');
 let file = require('./routes/file');
 
@@ -40,7 +40,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/user', user);
 app.use('/authenticate', auth);
 app.use('/authenticate/register', auth);
 app.use('/file', file);
