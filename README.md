@@ -48,6 +48,9 @@ Housekeeping:
 - Clean up UI.
 
 Functionality:
+- Add new button next to Download Selected to Delete Selected.
+- Add album maintenance, 1-* image to album
+- Add new button next to Download Selected to Move To Album.
 - Add GPS tags, integrate with Google Maps for user to pin a location on a map for lat/lon tag.
 - Add infinite scroll for thumbnail images in gallery.
 - Within the gallery, enable search (especially by tags).

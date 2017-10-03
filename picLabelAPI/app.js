@@ -10,6 +10,7 @@ let index = require('./routes/index');
 let user = require('./routes/user');
 let auth = require('./routes/auth');
 let file = require('./routes/file');
+let album = require('./routes/album');
 
 let app = express();
 
@@ -44,6 +45,7 @@ app.use('/user', user);
 app.use('/authenticate', auth);
 app.use('/authenticate/register', auth);
 app.use('/file', file);
+app.use('/album', album);
 
 // mongoose
 mongoose.connect('mongodb://localhost/picLabel');
